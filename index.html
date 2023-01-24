@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+#img{
+	border-style:solid;
+width:400px;
+height:300px;
+
+}
+#canvas{
+    border-style:solid;
+    background:url(https://thumbs.dreamstime.com/b/sunset-beach-sunrays-133301221.jpg);
+    background-size: 100% 102%;
+}
+#tx{
+    border-style:solid;
+    width:100%;
+height:400px;
+}
+#entradas{
+    position:absolute;
+    right:0;
+    top:0;
+    width:20%;
+    height:50%;
+        
+}
+#texto{
+    width:100%;
+    height:50%;
+
+}
+
+</style>
+<div id="entradas">
+<textarea id="texto"></textarea>
+<button onclick="procesar()">Procesar</button><br>
+Offset<input type="number" oninput="rule.offset=this.value"/><br>
+skeep<input type="number" oninput="rule.skeep=this.value"/><br>
+place<input type="number" oninput="rule.place=this.value"/><br>
+bk<input type="text" oninput="rule.bk=this.value"/>
+<button onclick="savepic()">Save</button>
+
+
+
+</div>
+	<img id="img"src-"https://media4.s-nbcnews.com/j/msnbc/Components/Photos/050405/050405_shuttle_vmed.fit-760w.jpg">
+	<canvas id="canvas" width=400 height=300></canvas>
+    <button onclick="init()">get date</button>
+    <textarea id="tx"></textarea>
+
+
+<script>
+  pic="https://thumbs.dreamstime.com/b/sun-rays-mountain-landscape-5721010.jpg"
+rule={offset:40,skeep:8,place:3,bk:"105% 101%"};
+var data,fdata;
+canvas.style.backgroundSize=rule.bk
+img.onload=function(){
+    
+ctx.drawImage(img,0,0,400,300)
+fdata=ctx.getImageData(0,0,400,300);
+data=fdata.data;
+tx.value=data;
+}
+var ctx=canvas.getContext("2d");
+
+
+toDataURL(pic, function(dataUrl) {
+ // https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0
+  img.src=dataUrl;
+})
+
+function procesar(){
+  ctx.drawImage(img,0,0,400,300)
+  canvas.style.backgroundSize=rule.bk
+   
+
+fdata=ctx.getImageData(0,0,400,300);
+data=fdata.data;
+//tx.value=data;
+
+
+
+
+var n=texto.value;
+for(var i=0;i<n.length;i++){
+    data[rule.offset+i*rule.skeep+rule.place]=n.charCodeAt(i);
+}
+fdata.data=data;
+tx.value=data;
+ctx.putImageData(fdata,0,0)
+}
+
+function init(){
+    tx.value=data;
+
+}
+
+function toDataURL(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+
+function savepic() {
+  canvas.toBlob(function(blob) {
+
+             var url = URL.createObjectURL(blob);
+             var fileName = 'ScreenShot-' + document.title + '-' + Date.now(); //png';
+             var anchor = document.createElement('a');
+             anchor.href = url;
+             anchor.setAttribute("download", fileName);
+             anchor.className = "download-js-link";
+             anchor.innerHTML = "downloading...";
+             anchor.style.display = "none";
+             document.body.appendChild(anchor);
+             setTimeout(function() {
+                 anchor.click();
+                 document.body.removeChild(anchor);
+             }, 1);
+
+         }, 'image/png');
+
+     }
+
+
+</script>
+
+
+  </body>
+</html>
+
+
+
