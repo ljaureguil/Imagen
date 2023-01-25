@@ -47,7 +47,7 @@ height:400px;
 <input type="file" oninput="openf(this)"></input>
 <textarea id="texto"></textarea>
 bk<input type="text" oninput="rule.bk=this.value"/>
-clv:<input type="text" value="40.4.3" oninput="setrule(this.value)"/>
+clv:<input type="text" value="40.8.3" oninput="setrule(this.value)"/>
 
 <button onclick="procesar()">Procesar</button><br><button onclick="savepic()">Save</button>
 <p id="clv"></p>
@@ -62,7 +62,7 @@ clv:<input type="text" value="40.4.3" oninput="setrule(this.value)"/>
 
 <script>
   pic="https://thumbs.dreamstime.com/b/sun-rays-mountain-landscape-5721010.jpg"
-rule={offset:40,skeep:8,place:3,bk:"105% 101%"};
+rule={offset:40,skeep:8,place:3,bk:"100% 101%"};
 var data,fdata;
 canvas.style.backgroundSize=rule.bk
 img.onload=function(){
@@ -82,7 +82,7 @@ toDataURL(pic, function(dataUrl) {
 
    function setrule(r){
        try{
-         //  alert(r)
+        
            var a=r.split(".");
          rule.offset=a[0]*1;rule.skeep=a[1]*1;rule.place=a[2]*1
          clv.innerHTML=JSON.stringify(rule)
@@ -95,18 +95,12 @@ toDataURL(pic, function(dataUrl) {
 function procesar(){
   ctx.drawImage(img,0,0,400,300)
   canvas.style.backgroundSize=rule.bk
-   
-
-fdata=ctx.getImageData(0,0,400,300);
-data=fdata.data;
-//tx.value=data;
-
-
-
-
+  fdata=ctx.getImageData(0,0,400,300);
+data=fdata.data;//alert(data.length)
 var n=texto.value;
 for(var i=0;i<n.length;i++){
-    data[rule.offset+i*rule.skeep+rule.place]=n.charCodeAt(i);
+ // alert(rule.offset*1+i*rule.skeep*1+rule.place*1)
+    data[rule.offset*1+i*rule.skeep*1+rule.place*1]=n.charCodeAt(i);
 }
 fdata.data=data;
 tx.value=data;
@@ -155,13 +149,19 @@ function savepic() {
 
 
      function openf(v) {
-              
+              var t=prompt("1 a text or 2 as Image")
             var fr=new FileReader();
             fr.onload=function(){
-             texto.value=fr.result;
+            if(t==null || t==1) texto.value=fr.result;
+            else {
+              img.src=fr.result;
+
+            }
             }
               
-           fr.readAsText(v.files[0]);
+            if(t==null || t==1) fr.readAsText(v.files[0]);
+           else fr.readAsDataURL(v.files[0]);
+
         }
   
 
@@ -170,5 +170,4 @@ function savepic() {
 
   </body>
 </html>
-
 
