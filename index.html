@@ -44,15 +44,12 @@ height:400px;
 
 </style>
 <div id="entradas">
+<input type="file" oninput="openf(this)"></input>
 <textarea id="texto"></textarea>
-
-Offset<input type="number" oninput="rule.offset=this.value"/><br>
-skeep<input type="number" oninput="rule.skeep=this.value"/><br>
-place<input type="number" oninput="rule.place=this.value"/><br>
 bk<input type="text" oninput="rule.bk=this.value"/>
 clv:<input type="text" value="40.4.3" oninput="setrule(this.value)"/>
-<button onclick="savepic()">Save</button>
-<button onclick="procesar()">Procesar</button><br>
+
+<button onclick="procesar()">Procesar</button><br><button onclick="savepic()">Save</button>
 <p id="clv"></p>
 
 
@@ -156,6 +153,16 @@ function savepic() {
 
      }
 
+
+     function openf(v) {
+              
+            var fr=new FileReader();
+            fr.onload=function(){
+             texto.value=fr.result;
+            }
+              
+           fr.readAsText(v.files[0]);
+        }
   
 
 </script>
