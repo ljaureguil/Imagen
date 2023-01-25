@@ -17,19 +17,19 @@ display:none;
 }
 #canvas{
     border-style:solid;
-    background:url(https://thumbs.dreamstime.com/b/sunset-beach-sunrays-133301221.jpg);
-    background-size: 100% 102%;
+  //  background:url(https://thumbs.dreamstime.com/b/sunset-beach-sunrays-133301221.jpg);
+    //background-size: 100% 102%;
 }
 #tx{
     border-style:solid;
-    width:50%;
+    width:100%;
 height:400px;
 }
 #entradas{
-    position:absolute;
+    position: relative;;
     right:0px;
     bottom:0px;
-    width:50%;
+    width:100%;
     height:50%;
     background:rgba(200,240,255,.4);
     padding:5px;
@@ -43,24 +43,26 @@ height:400px;
 }
 
 </style>
-<div id="entradas">
-<input type="file" oninput="openf(this)"></input>
-<textarea id="texto"></textarea>
-bk<input type="text" oninput="rule.bk=this.value"/>
-clv:<input type="text" value="40.8.3" oninput="setrule(this.value)"/>
 
-<button onclick="procesar()">Procesar</button><br><button onclick="savepic()">Save</button>
-<p id="clv"></p>
-
-
-</div>
 	<img id="img"src-"https://media4.s-nbcnews.com/j/msnbc/Components/Photos/050405/050405_shuttle_vmed.fit-760w.jpg">
 	<canvas id="canvas" width=400 height=300></canvas>
-    <button onclick="init()">get date</button>
-    <textarea id="tx"></textarea>
-
-
+ 
+    
+    <div id="entradas">
+      <input type="file" oninput="openf(this)"></input>
+      <textarea id="texto"></textarea>
+      bk<input type="text" oninput="rule.bk=this.value"/>
+      clv:<input type="text" value="40.8.3" oninput="setrule(this.value)"/>
+         <button onclick="init()">Show date</button>
+      <button onclick="procesar()">Procesar</button>
+      <button onclick="savepic()">Save</button>
+      <button onclick="dos()">dos</button>
+     
+      <p id="clv"></p>
+      </div>
+<textarea id="tx"></textarea>
 <script>
+  tx.style.display="none";
   pic="https://thumbs.dreamstime.com/b/sun-rays-mountain-landscape-5721010.jpg"
 rule={offset:40,skeep:8,place:3,bk:"100% 101%"};
 var data,fdata;
@@ -99,7 +101,7 @@ function procesar(){
 data=fdata.data;//alert(data.length)
 var n=texto.value;
 for(var i=0;i<n.length;i++){
- // alert(rule.offset*1+i*rule.skeep*1+rule.place*1)
+ 
     data[rule.offset*1+i*rule.skeep*1+rule.place*1]=n.charCodeAt(i);
 }
 fdata.data=data;
@@ -109,6 +111,8 @@ ctx.putImageData(fdata,0,0)
 
 function init(){
     tx.value=data;
+    if(tx.style.display==="none") tx.style.display="block"
+    else tx.style.display="none"
 
 }
 
@@ -163,6 +167,15 @@ function savepic() {
            else fr.readAsDataURL(v.files[0]);
 
         }
+      function dos(){
+  
+        var n="";
+for(var i=0;i<data.length;i++){
+  n+=String.fromCharCode(data[rule.offset*1+i*rule.skeep*1+rule.place*1]);//alert(data[rule.offset*1+i*rule.skeep*1+rule.place*1])
+}
+texto.value=n;
+
+}
   
 
 </script>
