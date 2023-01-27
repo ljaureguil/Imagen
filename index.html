@@ -1,13 +1,26 @@
 
+
 <!DOCTYPE html>
 <html>
-    <meta name="viewport" content="width=device-width" name="theme-color" content="#4285f4">
+    <meta name="viewport" content="width=device-width, height=device-height" name="theme-color" content="#4285f4">
     <link rel="shortcut icon" href="https://www.transparentpng.com/thumb/saturn/3d-saturn-free-png-IK0bAI.png"
     type="image/x-icon" />
 
 
 <body>
 <style>
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%;
+}
+
+#todo{
+    height:100%;
+    width:100%;
+   
+}
 #img{
 	border-style:solid;
 width:400px;
@@ -24,15 +37,20 @@ display:none;
     border-style:solid;
     width:100%;
 height:400px;
+color:white;
+background:black;
 }
 #entradas{
     position: relative;;
     right:0px;
     bottom:0px;
     width:100%;
-    height:50%;
-    background:rgba(200,240,255,.4);
+    height:80%;
+  //  background:rgba(200,240,255,.4);
+  background:white;
     padding:5px;
+    border-style:solid;
+
         
 }
 #texto{
@@ -43,7 +61,7 @@ height:400px;
 }
 
 </style>
-
+<div id="todo">
 	<img id="img"src-"https://media4.s-nbcnews.com/j/msnbc/Components/Photos/050405/050405_shuttle_vmed.fit-760w.jpg">
 	<canvas id="canvas" width=400 height=300></canvas>
  
@@ -53,7 +71,7 @@ height:400px;
       <textarea id="texto"></textarea>
       bk<input type="text" oninput="rule.bk=this.value"/>
       clv:<input type="text" value="40.8.3" oninput="setrule(this.value)"/>
-         <button onclick="init()">Show date</button>
+         <button onclick="init()">Show Data</button>
       <button onclick="procesar()">Procesar</button>
       <button onclick="savepic()">Save</button>
       <button onclick="dos()">dos</button>
@@ -61,26 +79,32 @@ height:400px;
       <p id="clv"></p>
       </div>
 <textarea id="tx"></textarea>
+</div>
 <script>
   tx.style.display="none";
   pic="https://thumbs.dreamstime.com/b/sun-rays-mountain-landscape-5721010.jpg"
 rule={offset:40,skeep:8,place:3,bk:"100% 101%"};
 var data,fdata;
 canvas.style.backgroundSize=rule.bk
+
+
 img.onload=function(){
     
 ctx.drawImage(img,0,0,400,300)
 fdata=ctx.getImageData(0,0,400,300);
 data=fdata.data;
 tx.value=data;
-}
-var ctx=canvas.getContext("2d");
+}/**/
+var ctx=canvas.getContext("2d",{willReadFrequently:true});
+ctx.fillStyle ="rgba(0,0,0,0)";
+ctx.fillRect(0,0,canvas.width,canvas.height)
+data=ctx.getImageData(0,0,400,300).data;
+tx.value=data;
 
-
-toDataURL(pic, function(dataUrl) {
+//toDataURL(pic, function(dataUrl) {
  // https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0
-  img.src=dataUrl;
-})
+ // img.src=dataUrl;
+//})
 
    function setrule(r){
        try{
@@ -95,6 +119,7 @@ toDataURL(pic, function(dataUrl) {
 
 
 function procesar(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(img,0,0,400,300)
   canvas.style.backgroundSize=rule.bk
   fdata=ctx.getImageData(0,0,400,300);
@@ -117,6 +142,7 @@ function init(){
 }
 
 function toDataURL(url, callback) {
+
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var reader = new FileReader();
@@ -132,9 +158,10 @@ function toDataURL(url, callback) {
 
 function savepic() {
   canvas.toBlob(function(blob) {
-
+             var name=prompt("File Name:",'ScreenShot-' + document.title + '-' + Date.now());
+             if(name==null) {alert("File not saved, missing name");return}
              var url = URL.createObjectURL(blob);
-             var fileName = 'ScreenShot-' + document.title + '-' + Date.now(); //png';
+             var fileName = name //png';
              var anchor = document.createElement('a');
              anchor.href = url;
              anchor.setAttribute("download", fileName);
@@ -153,11 +180,13 @@ function savepic() {
 
 
      function openf(v) {
-              var t=prompt("1 a text or 2 as Image")
+
+              var t=prompt("1 a text or 2 as Image",1)
             var fr=new FileReader();
             fr.onload=function(){
             if(t==null || t==1) texto.value=fr.result;
             else {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
               img.src=fr.result;
 
             }
@@ -183,4 +212,3 @@ texto.value=n;
 
   </body>
 </html>
-
