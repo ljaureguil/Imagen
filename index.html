@@ -206,7 +206,26 @@ texto.value=n;
 
 }
   
+function savepic2(){
 
+// This code will automatically save the current canvas as a .png file. 
+// Its useful as it can be placed in a loop to grab multiple canvas frames, I use it to create thumbnail gifs for my blog
+// Only seems to work with Chrome
+
+// Get the canvas
+//var canvas = document.getElementById("canvas");
+// Convert the canvas to data
+var image = canvas.toDataURL();
+// Create a link
+var aDownloadLink = document.createElement('a');
+// Add the name of the file to the link
+aDownloadLink.download = 'canvas_image.png';
+// Attach the data to the link
+aDownloadLink.href = image;
+// Get the code to click the download link
+aDownloadLink.click();
+ /**///
+   }
 </script>
 
 
